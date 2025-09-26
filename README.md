@@ -1,7 +1,5 @@
 # FinanzApp - Tu Compañero Financiero 🧉
 
-![FinanzApp Logo](./public/file.svg)
-
 FinanzApp es una plataforma moderna y amigable diseñada para que los argentinos tengamos un mejor control de nuestras finanzas personales. Ya sea que necesites hacer un seguimiento de gastos, administrar deudas o recibir consejos impulsados por IA para ahorros en pesos o dólares, FinanzApp te brinda las herramientas necesarias para tu éxito financiero.
 
 ## 🎯 El Problema que Resolvemos
@@ -40,7 +38,7 @@ FinanzApp aborda estos desafíos proporcionando una plataforma intuitiva que hac
 
 1. Cloná el repositorio:
 ```bash
-git clone https://github.com/tuusuario/finanzapp.git
+git clone git@github.com:SEguidazu/finanzas-app.git
 ```
 
 2. Instalá las dependencias:
