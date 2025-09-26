@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FinanzApp - Tu Compañero Financiero 🧉
 
-## Getting Started
+![FinanzApp Logo](./public/file.svg)
 
-First, run the development server:
+FinanzApp es una plataforma moderna y amigable diseñada para que los argentinos tengamos un mejor control de nuestras finanzas personales. Ya sea que necesites hacer un seguimiento de gastos, administrar deudas o recibir consejos impulsados por IA para ahorros en pesos o dólares, FinanzApp te brinda las herramientas necesarias para tu éxito financiero.
 
+## 🎯 El Problema que Resolvemos
+
+Muchos argentinos luchamos con:
+- Falta de educación financiera y control de gastos
+- Dificultad para administrar deudas diarias
+- Necesidad de organizar finanzas de manera segura y eficiente
+- Acceso limitado a consejos financieros personalizados
+- Manejo de diferentes monedas y tipos de cambio
+
+FinanzApp aborda estos desafíos proporcionando una plataforma intuitiva que hace que la gestión financiera sea accesible para todos, sin importar tu nivel de conocimiento financiero.
+
+## ✨ Características Principales
+
+- **Control de Gastos**: Registrá y categorizá tus gastos diarios fácilmente
+- **Gestión de Ingresos**: Seguí múltiples fuentes de ingresos en un solo lugar
+- **Organización de Deudas**: Administrá y monitoreá tus deudas eficientemente
+- **IA para Finanzas**: Recibí recomendaciones personalizadas para ahorros e inversiones
+- **Gestión Segura**: Tus datos financieros protegidos con practicas de ciberseguridad.
+- **Interfaz Accesible**: Diseño amigable que funciona en todos tus dispositivos
+- **Multi-Moneda**: Manejo de pesos, dólares y otras divisas
+
+## 🛠️ Stack Tecnológico
+
+- **Frontend**: React, Next.js, TypeScript
+- **Estilos**: TailwindCSS
+- **Backend**: Next.js API Routes
+- **Base de Datos**: PostgreSQL
+- **Autenticación**: Supabase Auth
+- **Automatización**: n8n
+- **Componentes UI**: Radix UI
+- **Gráficos**: Recharts
+
+## 🚀 Comenzando
+
+1. Cloná el repositorio:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/tuusuario/finanzapp.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instalá las dependencias:
+```bash
+pnpm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Configurá las variables de entorno:
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Iniciá el servidor de desarrollo:
+```bash
+pnpm dev
+```
 
-## Learn More
+Visitá [http://localhost:3000](http://localhost:3000) para ver la aplicación.
 
-To learn more about Next.js, take a look at the following resources:
+## 🤖 Funciones con IA
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Nuestra plataforma utiliza inteligencia artificial para brindarte:
+- Recomendaciones personalizadas de ahorro
+- Análisis de patrones de gastos
+- Oportunidades de inversión basadas en tu perfil
+- Categorización automática de transacciones
+- Sugerencias inteligentes de presupuesto
+- Alertas de gastos hormiga
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🌐 Accesibilidad
 
-## Deploy on Vercel
+FinanzApp está construida pensando en la accesibilidad:
+- Cumplimiento con WCAG 2.1
+- Navegación completa por teclado
+- Compatibilidad con lectores de pantalla
+- Modo de alto contraste
+- Diseño responsive para todos los dispositivos
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Hecho con ❤️ en Argentina 🇦🇷
