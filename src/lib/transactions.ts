@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSupabaseServerClient } from './supabase-server'
+import { createSupabaseClient } from './supabase-browser'
 import { Database } from './database.types'
 import { ensureCategoryExists } from './categories'
 
@@ -24,7 +24,7 @@ export const createTransaction = async (data: CreateTransactionData): Promise<{
   data: Transaction | null
   error: any
 }> => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
   
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
@@ -81,7 +81,7 @@ const createInstallments = async (
   installments: number,
   firstDueDate: string
 ) => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
   const installmentAmount = totalAmount / installments
   const installmentRecords = []
 
@@ -120,7 +120,7 @@ export const getUserTransactions = async ({
   endDate?: string
   search?: string
 } = {}) => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
   
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { data: null, error: { message: 'User not authenticated' } }
@@ -186,7 +186,7 @@ export const getTransactionSummary = async (
   startDate?: string,
   endDate?: string
 ) => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
   
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { data: null, error: { message: 'User not authenticated' } }
@@ -225,7 +225,7 @@ export const updateTransaction = async (
   transactionId: string,
   updates: Partial<CreateTransactionData>
 ): Promise<{ data: Transaction | null; error: any }> => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
   
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
@@ -272,7 +272,7 @@ export const updateTransaction = async (
 }
 
 export const deleteTransaction = async (transactionId: string) => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
   
   const { error } = await supabase
     .from('transactions')

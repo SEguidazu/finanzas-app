@@ -9,6 +9,7 @@ import { getBanksForUser } from '@/lib/banks'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { FloatingActionButton } from '@/components/ui/floating-action-button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { toast } from "sonner"
 
@@ -274,6 +275,8 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        <FloatingActionButton />
       </main>
     </div>
   )

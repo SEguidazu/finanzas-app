@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSupabaseServerClient } from './supabase-server'
+import { createSupabaseClient } from './supabase-browser'
 import { Database } from './database.types'
 
 type PaymentMethod = Database['public']['Tables']['payment_methods']['Row']
@@ -18,7 +18,7 @@ export interface CreatePaymentMethodData {
 }
 
 export const getUserPaymentMethods = async (activeOnly = true) => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
   
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { data: null, error: { message: 'User not authenticated' } }
@@ -49,7 +49,7 @@ export const getUserPaymentMethods = async (activeOnly = true) => {
 export const createPaymentMethod = async (
   data: CreatePaymentMethodData
 ): Promise<{ data: PaymentMethod | null; error: any }> => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
   
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
@@ -97,7 +97,7 @@ export const updatePaymentMethod = async (
   paymentMethodId: string,
   updates: Partial<CreatePaymentMethodData>
 ): Promise<{ data: PaymentMethod | null; error: any }> => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
 
   const updateData: Partial<PaymentMethodInsert> = {}
   
@@ -123,7 +123,7 @@ export const updatePaymentMethod = async (
 }
 
 export const deactivatePaymentMethod = async (paymentMethodId: string) => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
 
   const { error } = await supabase
     .from('payment_methods')
@@ -135,7 +135,7 @@ export const deactivatePaymentMethod = async (paymentMethodId: string) => {
 }
 
 export const reactivatePaymentMethod = async (paymentMethodId: string) => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
 
   const { error } = await supabase
     .from('payment_methods')
@@ -147,7 +147,7 @@ export const reactivatePaymentMethod = async (paymentMethodId: string) => {
 }
 
 export const deletePaymentMethod = async (paymentMethodId: string) => {
-  const supabase = createSupabaseServerClient()
+  const supabase = createSupabaseClient()
   
   const { data: transactions, error: checkError } = await supabase
     .from('transactions')
