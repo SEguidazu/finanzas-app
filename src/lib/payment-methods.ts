@@ -17,6 +17,8 @@ export interface CreatePaymentMethodData {
   expiryYear?: number
 }
 
+export interface PaymentMethodWithBank extends PaymentMethod { banks?: { name: string } | null }
+
 export const getUserPaymentMethods = async (activeOnly = true) => {
   const supabase = createSupabaseClient()
   
@@ -174,7 +176,7 @@ export const deletePaymentMethod = async (paymentMethodId: string) => {
   return { error }
 }
 
-export const formatPaymentMethodName = (paymentMethod: PaymentMethod & { banks?: { name: string } | null }): string => {
+export const formatPaymentMethodName = (paymentMethod: PaymentMethodWithBank): string => {
   const bankName = paymentMethod.banks?.name
   const lastFour = paymentMethod.last_four_digits
   const brand = paymentMethod.brand

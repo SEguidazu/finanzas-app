@@ -9,9 +9,10 @@ import { getBanksForUser } from '@/lib/banks'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { FloatingActionButton } from '@/components/ui/floating-action-button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { FloatingActionButton } from '@/components/ui/floating-action-button'
 import { toast } from "sonner"
+
 
 type CategoryTemplate = {
   template_id: string
@@ -90,7 +91,7 @@ export default function DashboardPage() {
     const { error } = await signOut()
     if (error) {
       toast.error("Error", {
-        description: error.message,
+        description: error.message
       })
     } else {
       toast.success("Sesión cerrada", {
@@ -109,17 +110,21 @@ export default function DashboardPage() {
           description: `La categoría "${templateName}" se creó exitosamente con ID: ${categoryId.data}`,
         })
 
+        // Reload categories to show the new one
         const { data: categories } = await getUserCategories()
         if (categories) {
           setUserCategories(categories)
         }
       }
     } catch (error) {
-      console.error('Error creating category:', error)
       toast.error("Error", {
         description: "No se pudo crear la categoría",
       })
     }
+  }
+
+  const handleTransactionCreated = () => {
+    console.log('Transaction created, refresh data if needed')
   }
 
   if (loading || loadingData) {
@@ -137,8 +142,11 @@ export default function DashboardPage() {
     return null
   }
 
+
+
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Header */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
@@ -158,6 +166,7 @@ export default function DashboardPage() {
       </header>
 
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        {/* System Status */}
         <div className="mb-8">
           <Alert>
             <AlertDescription>
@@ -169,6 +178,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Available Category Templates */}
           <Card>
             <CardHeader>
               <CardTitle>Categorías Disponibles (Templates)</CardTitle>
@@ -207,6 +217,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
+          {/* User's Created Categories */}
           <Card>
             <CardHeader>
               <CardTitle>Mis Categorías</CardTitle>
@@ -246,6 +257,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
+          {/* Available Banks */}
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle>Bancos Disponibles</CardTitle>
@@ -275,9 +287,10 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
-
-        <FloatingActionButton />
       </main>
+
+      {/* Floating Action Button */}
+      <FloatingActionButton onTransactionCreated={handleTransactionCreated} />
     </div>
   )
 }

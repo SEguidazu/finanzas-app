@@ -14,7 +14,7 @@ import { toast } from 'sonner'
 
 import { createTransaction, type CreateTransactionData } from '@/lib/transactions'
 import { getCategoryTemplates } from '@/lib/categories'
-import { getUserPaymentMethods, formatPaymentMethodName } from '@/lib/payment-methods'
+import { getUserPaymentMethods, formatPaymentMethodName, PaymentMethodWithBank } from '@/lib/payment-methods'
 import { Calendar, CreditCard, Receipt, Plus } from 'lucide-react'
 
 interface CategoryTemplate {
@@ -25,25 +25,6 @@ interface CategoryTemplate {
   type: string
   sort_order: number
   is_created: boolean
-}
-
-interface PaymentMethod {
-  id: string
-  user_id: string
-  bank_id: string | null
-  name: string
-  type: 'cash' | 'debit_card' | 'credit_card' | 'bank_transfer' | 'digital_wallet' | 'other'
-  brand: string | null
-  is_credit: boolean
-  credit_limit: number | null
-  last_four: string | null
-  last_four_digits: string | null
-  expiry_month: number | null
-  expiry_year: number | null
-  expires_at: string | null
-  color: string | null
-  is_active: boolean
-  created_at: string
 }
 
 interface TransactionFormProps {
@@ -57,6 +38,7 @@ export function TransactionForm({
   onCancel,
   initialType = 'expense'
 }: TransactionFormProps) {
+  // Form state
   const [type, setType] = useState<'expense' | 'income'>(initialType)
   const [amount, setAmount] = useState(0)
   const [description, setDescription] = useState('')
@@ -70,35 +52,39 @@ export function TransactionForm({
   const [installments, setInstallments] = useState(1)
   const [dueDate, setDueDate] = useState('')
 
+  // Data state
   const [categoryTemplates, setCategoryTemplates] = useState<CategoryTemplate[]>([])
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethodWithBank[]>([])
   const [loading, setLoading] = useState(false)
   const [loadingData, setLoadingData] = useState(true)
 
+  // Load initial data
   useEffect(() => {
-    const loadFormData = async () => {
-      setLoadingData(true)
-
-      try {
-        const { data: templates } = await getCategoryTemplates(type)
-        if (templates) {
-          setCategoryTemplates(templates)
-        }
-
-        const { data: methods } = await getUserPaymentMethods()
-        if (methods) {
-          setPaymentMethods(methods)
-        }
-      } catch (error) {
-        console.error('Error loading form data:', error)
-        toast.error('Error cargando datos del formulario')
-      } finally {
-        setLoadingData(false)
-      }
-    }
-
     loadFormData()
   }, [type])
+
+  const loadFormData = async () => {
+    setLoadingData(true)
+
+    try {
+      // Load category templates based on type
+      const { data: templates } = await getCategoryTemplates(type)
+      if (templates) {
+        setCategoryTemplates(templates)
+      }
+
+      // Load payment methods
+      const { data: methods } = await getUserPaymentMethods()
+      if (methods) {
+        setPaymentMethods(methods)
+      }
+    } catch (error) {
+      console.error('Error loading form data:', error)
+      toast.error('Error cargando datos del formulario')
+    } finally {
+      setLoadingData(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -149,8 +135,10 @@ export function TransactionForm({
           description: `${type === 'expense' ? 'Gasto' : 'Ingreso'} de $${amount.toLocaleString('es-AR')} registrado`
         })
 
+        // Reset form
         resetForm()
 
+        // Callback for parent component
         if (onSuccess) {
           onSuccess()
         }
@@ -179,8 +167,8 @@ export function TransactionForm({
 
   const handleTypeChange = (newType: 'expense' | 'income') => {
     setType(newType)
-    setCategoryName('')
-    setIsDebt(false)
+    setCategoryName('') // Reset category
+    setIsDebt(false) // Reset debt options when switching to income
   }
 
   if (loadingData) {
@@ -206,6 +194,7 @@ export function TransactionForm({
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Transaction Type */}
           <div className="space-y-2">
             <Label>Tipo de Transacción</Label>
             <div className="flex space-x-2">
@@ -228,6 +217,7 @@ export function TransactionForm({
             </div>
           </div>
 
+          {/* Amount */}
           <CurrencyInput
             label="Monto"
             value={amount}
@@ -235,6 +225,7 @@ export function TransactionForm({
             required
           />
 
+          {/* Description */}
           <div className="space-y-2">
             <Label htmlFor="description">Descripción *</Label>
             <Input
@@ -246,6 +237,7 @@ export function TransactionForm({
             />
           </div>
 
+          {/* Category Selection */}
           <div className="space-y-2">
             <Label>Categoría *</Label>
             <Select value={categoryName} onValueChange={setCategoryName}>
@@ -268,6 +260,7 @@ export function TransactionForm({
             </Select>
           </div>
 
+          {/* Payment Method */}
           <div className="space-y-2">
             <Label>Método de Pago</Label>
             <Select value={paymentMethodId} onValueChange={setPaymentMethodId}>
@@ -275,7 +268,6 @@ export function TransactionForm({
                 <SelectValue placeholder="Selecciona método de pago (opcional)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Sin método específico</SelectItem>
                 {paymentMethods.map((method) => (
                   <SelectItem key={method.id} value={method.id}>
                     <div className="flex items-center space-x-2">
@@ -284,6 +276,11 @@ export function TransactionForm({
                     </div>
                   </SelectItem>
                 ))}
+                {paymentMethods.length === 0 && (
+                  <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                    No hay métodos de pago configurados
+                  </div>
+                )}
               </SelectContent>
             </Select>
           </div>
@@ -304,6 +301,7 @@ export function TransactionForm({
             </div>
           </div>
 
+          {/* Debt Options (only for expenses) */}
           {type === 'expense' && (
             <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
               <div className="flex items-center justify-between">
@@ -346,17 +344,19 @@ export function TransactionForm({
             </div>
           )}
 
+          {/* Notes */}
           <div className="space-y-2">
             <Label htmlFor="notes">Notas (opcional)</Label>
             <Textarea
               id="notes"
               placeholder="Información adicional..."
               value={notes}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNotes(e.target.value)}
+              onChange={(e) => setNotes(e.target.value)}
               rows={3}
             />
           </div>
 
+          {/* Action Buttons */}
           <div className="flex space-x-2 pt-4">
             {onCancel && (
               <Button
